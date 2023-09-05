@@ -1,4 +1,4 @@
-const intentos = 3;
+let intentos = 3;
 let contraseña;
 let validar;
 
