@@ -1,59 +1,68 @@
 
-let intentos ;
-let contraseña;
-let usuarios = [];
+const btn = document.querySelector("#btn");
+const listaGastos = document.getElementById("listaGastos");
 
-let nombre;
-let correo;
+// Al cargar la página, verifica si hay gastos en el localStorage
 
-const cantidadUsuarios = parseInt(prompt("Ingrese la cantidad de usuarios que desea registrar:"));
+window.addEventListener("load", () => {
+    const gastosGuardados = JSON.parse(localStorage.getItem("gastos")) || [];
+    for (const gasto of gastosGuardados) {
+        agregarGastoALaLista(gasto);
+    }
+});
 
-for (let i = 0; i < cantidadUsuarios; i++) {
-     nombre = prompt("Ingrese su nombre:");
-     correo = prompt("Ingrese su correo electrónico:");
-    
-     intentos = 3;
+btn.addEventListener("click", () => {
+    agregarGasto();
+});
 
-    while (intentos > 0) {
-        contraseña = prompt("Ingrese su contraseña ");
+function agregarGasto() {
+    const descripcion = document.getElementById("descripcion").value;
+    const cantidad = document.getElementById("cantidad").value;
 
-        if (contraseña.length <= 8) {
-            alert("La contraseña debe tener al menos 8 caracteres.");
-        } else {
-            while(intentos > 0){ 
-            validar = prompt("Valide su contraseña tienes " + intentos + " intentos");
-            validacion(contraseña, validar);
-         }
-      }
-        if (intentos == 0) {
-            alert("Cuenta bloqueada temporalmente, comuníquese con el administrador");
+    if (descripcion && cantidad) {
+        const nuevoGasto = {
+            descripcion,
+            cantidad
+        };
+
+        agregarGastoALaLista(nuevoGasto);
+
+        // Recupera los gastos existentes del localStorage
+
+        const gastosGuardados = JSON.parse(localStorage.getItem("gastos")) || [];
+        gastosGuardados.push(nuevoGasto);
+
+        // Actualiza el localStorage con la nueva lista de gastos
+        
+        localStorage.setItem("gastos", JSON.stringify(gastosGuardados));
+
+        document.getElementById("descripcion").value = "";
+        document.getElementById("cantidad").value = "";
+    }
+}
+
+function agregarGastoALaLista(gasto) {
+    let listItem = document.createElement("li");
+    let deleteButton = document.createElement("button");
+
+    deleteButton.className = "delete-button";
+    deleteButton.textContent = "Eliminar";
+    deleteButton.addEventListener("click", () => {
+        listaGastos.removeChild(listItem);
+
+        // Elimina el gasto del localStorage
+        
+        const gastosGuardados = JSON.parse(localStorage.getItem("gastos")) || [];
+        const index = gastosGuardados.indexOf(gasto);
+        if (index !== -1) {
+            gastosGuardados.splice(index, 1);
+            localStorage.setItem("gastos", JSON.stringify(gastosGuardados));
         }
-    }
+    });
+
+    listItem.textContent = gasto.descripcion + " $" + gasto.cantidad;
+    listItem.appendChild(deleteButton);
+
+    listaGastos.appendChild(listItem);
 }
-console.log("Lista de usuarios registrados:");
-console.log(usuarios);
-
-function registrarUsuario(nombre, correo, contraseña) {
-    const usuario = {
-        nombre: nombre,
-        correo: correo,
-        contraseña: contraseña
-    };
-    usuarios.push(usuario);
-    alert("Usuario registrado con éxito.");
-}
-
-function validacion(contraseña, validar) {
-    if (contraseña === validar) {
-        alert("Tu contraseña ha sido validada correctamente ");
-        registrarUsuario(nombre, correo, contraseña);
-
-        intentos = -1;
-    } else {
-        alert("Tu contraseña no coincide con la que ingresaste");
-        intentos--;
-    }
-}
-
-
 
