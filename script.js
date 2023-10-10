@@ -1,6 +1,19 @@
 
 const btn = document.querySelector("#btn");
 const listaGastos = document.getElementById("listaGastos");
+const agregarPresupuesto = document.getElementById("presupuesto");
+
+// Agregar el presupuesto 
+
+    const presupuesto = Number(prompt("Ingresa tu presupuesto"));
+    const container = document.createElement("article")
+    container.innerHTML = `
+    <div> Presupuesto:$ ${presupuesto} </div>`;
+    
+    agregarPresupuesto.appendChild(container);
+
+    
+    
 
 // Al cargar la página, verifica si hay gastos en el localStorage
 
