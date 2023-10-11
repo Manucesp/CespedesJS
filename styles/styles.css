@@ -2,7 +2,11 @@ h1{
     text-align: center;
     color: white;
 }
-
+.negrita{
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+}
 .container {
     display: flex;
     justify-content: space-between;

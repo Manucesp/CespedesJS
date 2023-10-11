@@ -1,18 +1,23 @@
 
 const btn = document.querySelector("#btn");
+const btn2 = document.getElementById("btn-2");
 const listaGastos = document.getElementById("listaGastos");
-const agregarPresupuesto = document.getElementById("presupuesto");
+const presupuestoInicial = document.getElementById("presupuesto");
 
-// Agregar el presupuesto 
+const agregarPresupuesto = document.getElementById("presupuesto-restante");
 
-    const presupuesto = Number(prompt("Ingresa tu presupuesto"));
-    const container = document.createElement("article")
+btn2.addEventListener("click", () => {
+   
+    const container = document.createElement("p")
     container.innerHTML = `
-    <div> Presupuesto:$ ${presupuesto} </div>`;
+    <p>Presupuesto restante:$ ${presupuestoInicial.value} </p>`;
     
     agregarPresupuesto.appendChild(container);
+       
+    presupuesto.value = "";
 
-    
+});
+
     
 
 // Al cargar la página, verifica si hay gastos en el localStorage

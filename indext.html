@@ -11,17 +11,25 @@
     <h1 class="titulo">GASTO SEMANAL</h1>
     <div class="container">
         <div class="left">
+            <div> 
+               <label for="presupuesto" class="negrita">Presupuesto inicial:</label>
+               <input type="number" name="presupuesto" id="presupuesto">
+               <button id="btn-2" class="agregar">Agregar</button>
+            </div>
+
             <h2>Ingrese gasto: </h2>
             <label for="descripcion">Descripción:</label>
             <input type="text" id="descripcion" placeholder="Descripción del gasto" required >
+
             <label for="cantidad">Cantidad:</label>
             <input type="text" id="cantidad" placeholder="Cantidad en $" required >
+
             <button id="btn" class="agregar">Agregar</button>
         </div>
         <div class="right">
             <h2>Listado de Gastos</h2>
-            <div class="presupuesto" id="presupuesto">
-                
+            <div >
+                <h3><span id="presupuesto-restante"></span></h3>
             </div>
             <ul id="listaGastos">
              
