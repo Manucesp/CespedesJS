@@ -5,6 +5,8 @@ const listaGastos = document.getElementById("listaGastos");
 const presupuestoInicial = document.getElementById("presupuesto");
 const presupuestoRestante = document.getElementById("presupuesto-restante");
 
+const dolarInfo = document.getElementById("dolar-info");
+
 let presupuesto = parseFloat(localStorage.getItem("presupuesto")) || 0;
 let gastosGuardados = JSON.parse(localStorage.getItem("gastos")) || [];
 
@@ -27,6 +29,7 @@ window.addEventListener("load", () => {
     }
     actualizarPresupuesto();
    };
+    obtenerCotizacionDolar();
 });
 
 btn.addEventListener("click", () => {
@@ -89,3 +92,16 @@ function actualizarPresupuesto(){
     presupuestoRestante.innerText = `Presupuesto restante: $ ${presupuestoActual}`;
 };
 
+const url = 'https://open.er-api.com/v6/latest/USD';
+
+function obtenerCotizacionDolar(){
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+        const cotizacionDolar = data.rates.ARS;
+        dolarInfo.textContent = `Cotizacion del dolar: $ ${cotizacionDolar}`;
+    })
+    .catch(error => {
+        console.error("Error al obtener la cotizacion del dolar:", error);
+    })
+};
