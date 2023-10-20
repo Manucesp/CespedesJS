@@ -17,11 +17,13 @@ btn2.addEventListener("click", () => {
 
     presupuestoInicial.disabled = true;
     localStorage.setItem("presupuesto", presupuesto);
+    
 });
 
 // Al cargar la página, verifica si hay gastos en el localStorage
 
 window.addEventListener("load", () => {
+    
     actualizarPresupuesto();
     if(gastosGuardados.length > 0){ 
     for (const gasto of gastosGuardados) {
@@ -40,7 +42,34 @@ btn.addEventListener("click", () => {
 function agregarGasto() {
     const descripcion = document.getElementById("descripcion").value;
     const cantidad = document.getElementById("cantidad").value;
+    validacion();
 
+    if (!validacion(descripcion)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lo siento',
+            text: 'La descripción solo puede contener texto',
+        });
+        return;
+    }
+    if (!esNumero(cantidad)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lo siento',
+            text: 'La cantidad debe ser un valor numérico',
+        });
+        return;
+    }
+
+    if (descripcion && !isNaN(cantidad) && cantidad > 0) {
+        if (cantidad > presupuesto) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lo siento',
+                text: 'La cantidad no puede ser mayor al presupuesto',
+            });
+            return;
+        }
 
     if (descripcion && !isNaN(cantidad) && cantidad > 0 ) {
         const nuevoGasto = {
@@ -58,7 +87,7 @@ function agregarGasto() {
         document.getElementById("cantidad").value = "";
         actualizarPresupuesto();
     }
-}
+}}
 
 function agregarGastoALaLista(gasto) {
     let listItem = document.createElement("li");
@@ -105,3 +134,14 @@ function obtenerCotizacionDolar(){
         console.error("Error al obtener la cotizacion del dolar:", error);
     })
 };
+
+function validacion(descripcion) {
+    // Expresión regular que verifica si solo contiene letras (mayúsculas o minúsculas) y espacios
+    
+    const regex = /^[A-Za-z\s]+$/;
+    return regex.test(descripcion);
+}
+function esNumero(valor) {
+    // la función isNaN para verificar si es un número
+    return !isNaN(parseFloat(valor)) && isFinite(valor);
+}
